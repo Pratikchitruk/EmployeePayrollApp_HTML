@@ -23,3 +23,51 @@ window.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
+const save = () => {
+    try {
+        let employeePayrollData = createEmployeePayroll();
+        createAndUpdateStorage(EmployeePayrollData);
+    }catch (e) {
+        return;
+    }
+}
+
+const createEmployeePayroll = () => {
+    let employeePayrollData = new EmployeePayrollData();
+    try {
+        employeePayrollData.name = getInputValueById('#name');
+    }catch (e) {
+        setTextValue('.text-error',e);
+        throw e;
+    }
+    employeePayrollData.profilePic = getSelectedValues('[name=profile]').pop();
+    employeePayrollData.gender = getSelectedValues('[name=gender]').pop();
+    employeePayrollData.department = getSelectedValues('[name=department]');
+    employeePayrollData.salary = getInputValueById('#salary');
+    employeePayrollData.note = getInputValueById('notes');
+    let date = getInputValueById('#day')+" "+getInputValueById('#month')+" "+getInputValueById('#year');
+    employeePayrollData.date = Date.parse(date);
+
+    alert(employeePayrollData.toString());
+    return employeePayrollData;
+}
+
+const setTextValue = (id, value) => {
+    const element = document.querySelector(id);
+    if(id.includes("#"))
+    {
+        element.value = value;
+    }
+    else
+        element.textContent = value;
+}
+const getSelectedValues = (propertyValue) => {
+    let allItems = document.querySelectorAll(propertyValue);
+    let selItems = [];
+    allItems.forEach(item => {
+        if(item.checked) selItems.push(item.value);
+    });
+    return selItems;
+}
+
+
